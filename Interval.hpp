@@ -28,13 +28,13 @@ public:
 
     double clamp(double x) const
     {
-        if (x < min) return min;
-        if (x > max) return max;
+        if(x < min) return min;
+        if(x > max) return max;
         return x;
     }
 };
 
-static const Interval empty    = Interval(+infinity, -infinity);
+static const Interval empty = Interval(+infinity, -infinity);
 static const Interval universe = Interval(-infinity, +infinity);
 
 #endif //INTERVAL_HPP

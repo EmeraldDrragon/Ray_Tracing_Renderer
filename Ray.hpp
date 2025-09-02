@@ -8,6 +8,7 @@ class Ray
 private:
     Vec3 o;
     Vec3 d;
+
 public:
     Ray() {}
     Ray(const Vec3& o, const Vec3& d) : o(o), d(d) {}

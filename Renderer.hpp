@@ -53,7 +53,7 @@ private:
 
 public:
     //ssaa
-    int samples_per_pixel = 50;
+    int samples_per_pixel = 10;
 
     //constructor
     Renderer(std::string file_path, int width, int height, Vec3 look_from, Vec3 look_at, Vec3 vup, double focal_length, double vfov, SurfaceGroup& world);
@@ -77,9 +77,7 @@ public:
     void addPointLight(const PointLight& light) { point_lights.push_back(light); }
 
     void addAmbientLight(const AmbientLight& light) { ambient_lights.push_back(light); }
-
 };
-
 
 
 #endif //RENDERER_HPP

@@ -10,6 +10,7 @@ public:
     Rgb color;
     double intensity;
     Light(const Rgb& col, double i) : color{col}, intensity{i} {}
+
     virtual ~Light() = default;
 };
 

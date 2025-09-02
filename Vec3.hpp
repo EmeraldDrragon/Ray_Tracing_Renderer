@@ -10,6 +10,7 @@ private:
     double x_c;
     double y_c;
     double z_c;
+
 public:
     Vec3() : x_c{0}, y_c{0}, z_c{0} {}
     Vec3(double x, double y, double z) : x_c{x}, y_c{y}, z_c{z} {}
@@ -40,7 +41,7 @@ public:
 
     double length() const
     {
-        return std::sqrt(x_c*x_c + y_c*y_c + z_c*z_c);
+        return std::sqrt(x_c * x_c + y_c * y_c + z_c * z_c);
     }
 };
 
@@ -56,7 +57,7 @@ inline Vec3 operator+(const Vec3& v, const Vec3& w)
 
 inline Vec3 operator-(const Vec3& v, const Vec3& w)
 {
-    return {v.x()-w.x(), v.y()-w.y(), v.z()-w.z()};
+    return {v.x() - w.x(), v.y() - w.y(), v.z() - w.z()};
 }
 
 inline Vec3 operator*(double t, const Vec3& v)
@@ -71,7 +72,7 @@ inline Vec3 operator*(const Vec3& v, double t)
 
 inline Vec3 operator/(const Vec3& v, double t)
 {
-    return (1/t) * v;
+    return (1 / t) * v;
 }
 
 inline double dot(const Vec3& v, const Vec3& w)
@@ -81,9 +82,11 @@ inline double dot(const Vec3& v, const Vec3& w)
 
 inline Vec3 cross(const Vec3& v, const Vec3& w)
 {
-    return {v.y()*w.z() - v.z()*w.y(),
-                v.z()*w.x() - v.x()*w.z(),
-                v.x()*w.y() - v.y()*w.x()};
+    return {
+        v.y() * w.z() - v.z() * w.y(),
+        v.z() * w.x() - v.x() * w.z(),
+        v.x() * w.y() - v.y() * w.x()
+    };
 }
 
 inline Vec3 unit_vector(const Vec3& v)
