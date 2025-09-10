@@ -32,7 +32,7 @@ int main()
 
     SurfaceGroup world;
 
-    auto torus = Mesh("C:\\Users\\Salamat\\Desktop\\Salamat\\Programming\\Projects\\C++\\Ray_Tracing_Renderer\\Torus.obj", make_shared<Material>(default_material));
+    auto torus = Mesh("C:\\Users\\Salamat\\Desktop\\Salamat\\Programming\\Projects\\C++\\Ray_Tracing_Renderer\\Cylinder.obj", make_shared<Material>(default_material));
     world.add(make_shared<Mesh>(torus));
     world.add(make_shared<Sphere>(Vec3(0.0, -101, -1.0), 100.0, make_shared<Material>(ground_material)));
     // world.add(make_shared<Sphere>(Vec3( 0.0,    0.0, -1.2),   0.5,make_shared<Material>(default_material)));
@@ -52,7 +52,7 @@ int main()
     // world.add(make_shared<Sphere>(Vec3( std::cos(pi/4), 0, -1), std::cos(pi/4), make_shared<Material>(default_material)));
 
     Renderer render_inst(ppm_file_path, image_width, image_height, look_from, look_at, vup, focal_length, vfov, world);
-    render_inst.addPointLight(PointLight(Vec3(-1, 1, 1), Rgb(1, 1, 1), 1.0));
+    render_inst.addPointLight(PointLight(Vec3(-1,1,2), Rgb(1, 1, 1), 1));
     render_inst.addAmbientLight(AmbientLight(Rgb(1, 1, 1), 0.1));
 
     render_inst.render();

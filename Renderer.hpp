@@ -53,7 +53,7 @@ private:
 
 public:
     //ssaa
-    int samples_per_pixel = 10;
+    int samples_per_pixel = 25;
 
     //constructor
     Renderer(std::string file_path, int width, int height, Vec3 look_from, Vec3 look_at, Vec3 vup, double focal_length, double vfov, SurfaceGroup& world);

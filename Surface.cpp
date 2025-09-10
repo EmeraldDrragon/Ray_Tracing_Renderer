@@ -135,62 +135,116 @@ bool Mesh::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
     return hit_anything;
 }
 
+// bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
+// {
+//     Vec3 n = unit_vector(cross(v1 - v0, v2 - v0));
+//
+//     double n_dot_ray_direction = dot(n, r.direction());
+//
+//     //check if not parallel
+//     if(fabs(n_dot_ray_direction) < kEpsilon)
+//     {
+//         return false;
+//     }
+//
+//     //d - plane
+//     double d = -dot(n, v0);
+//
+//     //t - distance of a ray to hit record
+//     double t = -(dot(n, r.origin()) + d) / n_dot_ray_direction;
+//
+//     //check if triangle is behind
+//     if(t < ray_t.min || t > ray_t.max)
+//     {
+//         return false;
+//     }
+//
+//     //Phit - intersection point
+//     Vec3 Phit = r.origin() + t * r.direction();
+//
+//     //in/out test
+//     Vec3 ne;
+//
+//     Vec3 v0v1 = v1 - v0;
+//     Vec3 v0p = Phit - v0;
+//     ne = cross(v0v1, v0p);
+//     if(dot(n, ne) < 0)
+//     {
+//         return false;
+//     }
+//
+//     Vec3 v2v1 = v2 - v1;
+//     Vec3 v1p = Phit - v1;
+//     ne = cross(v2v1, v1p);
+//     if(dot(n, ne) < 0)
+//     {
+//         return false;
+//     }
+//
+//     Vec3 v2v0 = v0 - v2;
+//     Vec3 v2p = Phit - v2;
+//     ne = cross(v2v0, v2p);
+//     if(dot(n, ne) < 0)
+//     {
+//         return false;
+//     }
+//     rec.t = t;
+//     rec.point = r.evaluate(rec.t);
+//     Vec3 outward_normal = n;
+//     rec.setFaceNormal(r, unit_vector(outward_normal));
+//     return true;
+// }
 bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
 {
-    Vec3 n = unit_vector(cross(v1 - v0, v2 - v0));
+    Vec3 e1 = v1 - v0;
+    Vec3 e2 = v2 - v0;
+    Vec3 pvec = cross(r.direction(),e2);
 
-    double n_dot_ray_direction = dot(n, r.direction());
-
-    //check if not parallel
-    if(fabs(n_dot_ray_direction) < kEpsilon)
+    double det = dot(e1,pvec);
+    if(det < kEpsilon)
+    {
+        return false;
+    }
+    if(fabs(det) < kEpsilon)
     {
         return false;
     }
 
-    //d - plane
-    double d = -dot(n, v0);
+    double invDet = 1.0 / det;
 
-    //t - distance of a ray to hit record
-    double t = -(dot(n, r.origin()) + d) / n_dot_ray_direction;
+    Vec3 tvec = r.origin() - v0;
+    double u = dot(tvec, pvec) * invDet;
+    if(u < 0 || u > 1)
+    {
+        return false;
+    }
 
-    //check if triangle is behind
+    Vec3 qvec = cross(tvec, e1);
+    double v = dot(r.direction(), qvec) * invDet;
+    if(v < 0 || u + v > 1)
+    {
+        return false;
+    }
+
+    double t = dot(e2, qvec) * invDet;
     if(t < ray_t.min || t > ray_t.max)
     {
         return false;
     }
 
-    //Phit - intersection point
-    Vec3 Phit = r.origin() + t * r.direction();
-
-    //in/out test
-    Vec3 ne;
-
-    Vec3 v0v1 = v1 - v0;
-    Vec3 v0p = Phit - v0;
-    ne = cross(v0v1, v0p);
-    if(dot(n, ne) < 0)
-    {
-        return false;
-    }
-
-    Vec3 v2v1 = v2 - v1;
-    Vec3 v1p = Phit - v1;
-    ne = cross(v2v1, v1p);
-    if(dot(n, ne) < 0)
-    {
-        return false;
-    }
-
-    Vec3 v2v0 = v0 - v2;
-    Vec3 v2p = Phit - v2;
-    ne = cross(v2v0, v2p);
-    if(dot(n, ne) < 0)
-    {
-        return false;
-    }
     rec.t = t;
     rec.point = r.evaluate(rec.t);
-    Vec3 outward_normal = n;
-    rec.setFaceNormal(r, unit_vector(outward_normal));
+
+    // Vec3 outward_normal = unit_vector(cross(e1,e2));
+    // rec.setFaceNormal(r, outward_normal);
+
+    double alpha = 1 - u -v;
+    double beta = u;
+    double gamma = v;
+    Vec3 interpolated_normal = alpha * n0 + beta * n1 + gamma * n2;
+    interpolated_normal = unit_vector(interpolated_normal);
+    rec.setFaceNormal(r, interpolated_normal);
+
     return true;
+
 }
