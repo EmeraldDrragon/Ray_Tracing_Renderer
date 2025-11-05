@@ -21,18 +21,18 @@ int main()
     image_height = (image_height < 1) ? 1 : image_height;
 
     //camera
-    Vec3 look_from = Vec3(-5, 3, 3);
+    Vec3 look_from = Vec3(3, 3, 3);
     Vec3 look_at = Vec3(0, 0, -1);
     Vec3 vup(0, 1, 0);
     auto focal_length = 1.0;
-    auto vfov = 30.0;
+    auto vfov = 40.0;
 
     Material default_material(Rgb(31.0 / 255.0, 254.0 / 255.0, 183.0 / 255.0));
     Material ground_material(Rgb(0.5, 0.5, 0.5));
 
     SurfaceGroup world;
 
-    auto torus = Mesh("C:\\Users\\Salamat\\Desktop\\Salamat\\Programming\\Projects\\C++\\Ray_Tracing_Renderer\\Cylinder.obj", make_shared<Material>(default_material));
+    auto torus = Mesh("C:\\Users\\Salamat\\Desktop\\Salamat\\Programming\\Projects\\C++\\Ray_Tracing_Renderer\\Ball.obj", make_shared<Material>(default_material));
     world.add(make_shared<Mesh>(torus));
     world.add(make_shared<Sphere>(Vec3(0.0, -101, -1.0), 100.0, make_shared<Material>(ground_material)));
     // world.add(make_shared<Sphere>(Vec3( 0.0,    0.0, -1.2),   0.5,make_shared<Material>(default_material)));

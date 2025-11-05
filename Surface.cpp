@@ -194,13 +194,25 @@ bool Mesh::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
 //     rec.setFaceNormal(r, unit_vector(outward_normal));
 //     return true;
 // }
+
+
 bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
 {
+    //with no rendering of the backside of the triangle
+
+    //find vectors for two edges sharing v0
     Vec3 e1 = v1 - v0;
     Vec3 e2 = v2 - v0;
+
+    //begin calculating determinant
+    //pvec is also used for u calculation
     Vec3 pvec = cross(r.direction(),e2);
 
+    //calculate determinant
     double det = dot(e1,pvec);
+
+    //check if ray actually hits
+    //determinant not 0 or not too small
     if(det < kEpsilon)
     {
         return false;
@@ -210,23 +222,27 @@ bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
         return false;
     }
 
-    double invDet = 1.0 / det;
+    //inverse of the determinant
+    double inv_det = 1.0 / det;
 
+    //calculate u using cramer's rule
     Vec3 tvec = r.origin() - v0;
-    double u = dot(tvec, pvec) * invDet;
+    double u = dot(tvec, pvec) * inv_det;
     if(u < 0 || u > 1)
     {
         return false;
     }
 
+    //calculate v using cramer's rule
     Vec3 qvec = cross(tvec, e1);
-    double v = dot(r.direction(), qvec) * invDet;
+    double v = dot(r.direction(), qvec) * inv_det;
     if(v < 0 || u + v > 1)
     {
         return false;
     }
 
-    double t = dot(e2, qvec) * invDet;
+    //calculate t to find the intersection point
+    double t = dot(e2, qvec) * inv_det;
     if(t < ray_t.min || t > ray_t.max)
     {
         return false;
@@ -235,16 +251,13 @@ bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
     rec.t = t;
     rec.point = r.evaluate(rec.t);
 
-    // Vec3 outward_normal = unit_vector(cross(e1,e2));
-    // rec.setFaceNormal(r, outward_normal);
-
     double alpha = 1 - u -v;
     double beta = u;
     double gamma = v;
     Vec3 interpolated_normal = alpha * n0 + beta * n1 + gamma * n2;
     interpolated_normal = unit_vector(interpolated_normal);
-    rec.setFaceNormal(r, interpolated_normal);
+
+    rec.normal = interpolated_normal;
 
     return true;
-
 }

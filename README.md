@@ -1,10 +1,18 @@
 # Ray_Tracing_Renderer
 CPU Ray Tracer
 
-personal project
+personal project, C++
 
-The renderer works on CPU, 
-accelerated with standard c++ cpu multithreading
+## Introduction
+This project is a CPU-based Ray Tracer. It loads triangle meshes
+from .obj files and renders images of 3D scenes.
+
+## Table of Contents
+- [Introduction](#introduction)
+
+
+
+
 
 The renderer works on polygon meshes, 
 uses blinn-phong shading,
