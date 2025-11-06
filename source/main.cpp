@@ -12,7 +12,7 @@
 int main()
 {
     //ppm file
-    std::string ppm_file_path = "C:\\Users\\Salamat\\Desktop\\Salamat\\Programming\\Projects\\C++\\Ray_Tracing_Renderer\\image.ppm";
+    std::string ppm_file_path = "image.ppm";
 
     //image
     auto aspect_ratio = 16.0 / 9.0;
@@ -32,7 +32,7 @@ int main()
 
     SurfaceGroup world;
 
-    auto torus = Mesh("C:\\Users\\Salamat\\Desktop\\Salamat\\Programming\\Projects\\C++\\Ray_Tracing_Renderer\\Ball.obj", make_shared<Material>(default_material));
+    auto torus = Mesh("Ball.obj", make_shared<Material>(default_material));
     world.add(make_shared<Mesh>(torus));
     world.add(make_shared<Sphere>(Vec3(0.0, -101, -1.0), 100.0, make_shared<Material>(ground_material)));
     // world.add(make_shared<Sphere>(Vec3( 0.0,    0.0, -1.2),   0.5,make_shared<Material>(default_material)));
