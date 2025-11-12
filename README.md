@@ -72,19 +72,3 @@ list of point lights and list of ambient lights.
 ## Future plans
  * Bounding Volume Hierarchy
  * Physics Based Ray Traced materials
-
-## How to run
-
-### prerequisites
- * C++17 or newer
- * CMake 3.10 or newer
-
-The project is using CMake. The main.cpp file contains the scene definition
-(camera, world, lights, materials). To render the scene, compile and run
-the resulting executable.
-
-cmake -B build
-
-cd build/bin
-
-./ray_tracer
