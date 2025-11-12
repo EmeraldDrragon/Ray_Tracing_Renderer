@@ -1,7 +1,3 @@
-//
-// Created by srdja on 7/29/2025.
-//
-
 #ifndef RGB_H
 #define RGB_H
 

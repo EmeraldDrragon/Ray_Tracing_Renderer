@@ -47,7 +47,6 @@ public:
     virtual bool hit(const Ray& r, Interval ray_t, HitRecord& rec) const = 0;
 };
 
-//class for world - a group of different surfaces - 3d objects
 class SurfaceGroup : public Surface
 {
 public:

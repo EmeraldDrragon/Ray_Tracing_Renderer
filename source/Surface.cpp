@@ -66,7 +66,6 @@ void readFace(Vec3& vertex, Vec3& normal, std::string& token, std::vector<Vec3>&
     normal = normals[n_index - 1];
 }
 
-
 Mesh::Mesh(std::string obj_file_path, shared_ptr<Material> mat) : material{mat}
 {
     std::vector<Vec3> vertices;
@@ -135,6 +134,7 @@ bool Mesh::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
     return hit_anything;
 }
 
+// //geometric solution
 // bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
 // {
 //     Vec3 n = unit_vector(cross(v1 - v0, v2 - v0));
@@ -195,24 +195,18 @@ bool Mesh::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
 //     return true;
 // }
 
-
+//moeller trumbore algorithm
 bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
 {
     //with no rendering of the backside of the triangle
 
-    //find vectors for two edges sharing v0
     Vec3 e1 = v1 - v0;
     Vec3 e2 = v2 - v0;
 
-    //begin calculating determinant
-    //pvec is also used for u calculation
     Vec3 pvec = cross(r.direction(),e2);
 
-    //calculate determinant
     double det = dot(e1,pvec);
 
-    //check if ray actually hits
-    //determinant not 0 or not too small
     if(det < kEpsilon)
     {
         return false;
@@ -222,10 +216,8 @@ bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
         return false;
     }
 
-    //inverse of the determinant
     double inv_det = 1.0 / det;
 
-    //calculate u using cramer's rule
     Vec3 tvec = r.origin() - v0;
     double u = dot(tvec, pvec) * inv_det;
     if(u < 0 || u > 1)
@@ -233,7 +225,6 @@ bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
         return false;
     }
 
-    //calculate v using cramer's rule
     Vec3 qvec = cross(tvec, e1);
     double v = dot(r.direction(), qvec) * inv_det;
     if(v < 0 || u + v > 1)
@@ -241,7 +232,6 @@ bool Triangle::hit(const Ray& r, Interval ray_t, HitRecord& rec) const
         return false;
     }
 
-    //calculate t to find the intersection point
     double t = dot(e2, qvec) * inv_det;
     if(t < ray_t.min || t > ray_t.max)
     {

@@ -14,7 +14,6 @@ Renderer::Renderer(std::string file_path, int width, int height, Vec3 look_from,
     out_file.open(file_path);
     image.resize(image_height, std::vector<Rgb>(image_width));
 
-    //setting up camera and viewport
     auto theta = degreesToRadians(vfov);
     auto h = std::tan(theta / 2);
     viewport_height = 2 * h * focal_length;
@@ -87,7 +86,7 @@ Rgb Renderer::rayColor(const Ray& r)
     return (1.0 - a) * Rgb(1.0, 1.0, 1.0) + a * Rgb(0.5, 0.7, 1.0);
 }
 
-//
+// //no multithreading
 // void Renderer::render()
 // {
 //     for(int j = 0; j < image_height; j++)
@@ -105,7 +104,7 @@ Rgb Renderer::rayColor(const Ray& r)
 //     }
 // }
 
-
+//for multithreading
 void Renderer::renderChunk(int start_row, int end_row)
 {
     for(int j = start_row; j < end_row; j++)
@@ -123,7 +122,7 @@ void Renderer::renderChunk(int start_row, int end_row)
     }
 }
 
-
+//with multithreading
 void Renderer::render()
 {
     int num_threads = 8;
@@ -140,7 +139,6 @@ void Renderer::render()
         th.join();
     }
 }
-
 
 void Renderer::color(std::ostream& out, const Rgb& pixel)
 {
